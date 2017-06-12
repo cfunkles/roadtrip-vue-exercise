@@ -90,13 +90,13 @@ mainAppVM = new Vue({
 
     },
     computed: {
-
+        
     },
     methods: {
         addSomething: function(item) {
             if (this.money > 0 && this.weight > 0) {
-                this.money = this.money - this.items[item].munnies;
-                this.weight = this.weight - this.items[item].weight;
+                this.money = parseInt(this.money) - this.items[item].munnies;
+                this.weight = parseInt(this.weight) - this.items[item].weight;
                 this.itemsInV.push(this.items[item].name); 
                 this.canRemove = true;
             } else {
@@ -107,8 +107,8 @@ mainAppVM = new Vue({
             for (var i = 0; i < this.itemsInV.length; i++) {
                 if (this.itemsInV[i] === this.items[item].name) {
                     this.itemsInV.splice(i, 1);
-                    this.money = this.money + this.items[item].munnies;
-                    this.weight = this.weight + this.items[item].weight;
+                    this.money = parseInt(this.money) + this.items[item].munnies;
+                    this.weight = parseInt(this.weight) + this.items[item].weight;
                     this.canPurchase = true;
                     return;
                 } else {
@@ -116,5 +116,34 @@ mainAppVM = new Vue({
                 }
             }
         },
+    },
+    created: function() {
+        var thisVm = this;
+        $.get('/vehicle', function(vehicle) {
+            if (vehicle) {
+                thisVm.money = vehicle.money;
+                thisVm.weight = vehicle.weight;
+                thisVm.itemsInV = vehicle.itemsInV;
+                console.log(vehicle);
+                console.log("you have a vehicle");
+            } else {
+                console.log("you don't have a vehicle");
+                $.post('/vehicle', {
+                    weight: thisVm.weight,
+                    money: thisVm.money,
+                    itemsInV: thisVm.itemsInV
+                }, function(success) {
+                    console.log('success');
+                });
+            }
+        });
+
+        // $(window).on("beforeunload", function() { 
+        //     console.log("Working!");
+        // });
+    },
+    destroyed:  function() {
+        console.log('destroyed worked!');
+
     }
 });
