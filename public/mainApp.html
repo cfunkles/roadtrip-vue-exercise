@@ -38,6 +38,7 @@
                 v-bind:yes="vehicleSelected"
                 v-on:add="addSomething(item.indexNum)"
                 v-on:remove="removeSomething(item.indexNum)"
+                v-bind:key="item.indexNum"
                 ></item-well>
         </div>
     </div>
