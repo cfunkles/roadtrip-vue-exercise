@@ -82,43 +82,8 @@ app.post('/login', function(req, res) {
     );
 });
 
-app.get('/vehicle', function(req, res) {
-    db.collection("users").findOne({
-        _id: ObjectID(req.session._id)
-    }, function(err, vehicle) {
-        if (err) {
-            console.log(err);
-            res.send('error');
-            return;
-        }
-        console.log('vehicle sent');
-        console.log(vehicle);
-        res.send(vehicle);
-    });
-});
 
-app.post('/vehicle', function(req, res) {
-    console.log('the destroyed function ran!');
-    console.log(req.body);
-    db.collection("users").updateOne(
-        {
-            _id: ObjectID(req.session._id),
-        },
-        {
-            $set : {
-                _id: req.session._id,
-                vehicle: req.body
-            }
-        }, function(err, result) {
-            if (err) {
-                console.log(err);
-                return;
-            }
-            res.send(result);
-            console.log('the result happened');
-        }
-    );
-});
+
 
 //serve public folder
 app.use(express.static('public'));
